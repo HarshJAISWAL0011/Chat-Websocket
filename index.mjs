@@ -11,7 +11,7 @@ const ws_port = process.env.PORT ;
 
 const app = express();
 const server = http.createServer(app);
-const wss = new WebSocketServer({ server,port: ws_port });
+const wss = new WebSocketServer({ server });
 const clients = new Map();
 
 
