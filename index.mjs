@@ -6,7 +6,7 @@ import { New_Connection, New_Message, WS_MESSAGE, WS_SENDER_ID, WS_SEND_TO_ID, W
 import { saveMessageFirestore } from './Firebase/util.mjs'; 
 import {sendCloudMessage} from './Firebase/Messaging.mjs';
 
-const ws_port = process.env.PORT ;
+const ws_port = process.env.PORT || 3000 ;
 
 
 const app = express();
@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 
 wss.on('connection', (ws) => {
   console.log('WebSocket connection established ' );
-  console.log(ws);
+  // console.log(ws);
 
   ws.on('message', (message) => {
     try {
@@ -29,7 +29,7 @@ wss.on('connection', (ws) => {
     ws.send(`Server Recived you msg: ${message}`);
     var msgJson = JSON.parse(message);
 
-    if(msgJson[WS_TYPE] == New_Connection)
+    if(msgJson[WS_TYPE] == New_Connection )
       clients.set(msgJson[WS_SENDER_ID], ws);
 
     else if(msgJson[WS_TYPE] ==New_Message){
@@ -42,10 +42,22 @@ wss.on('connection', (ws) => {
         sendCloudMessage(sendto,msgJson[WS_SENDER_ID],msgJson[WS_MESSAGE])
       }
     }
+
     } catch (error){
       console.log(error)
     }
   });
+
+  ws.on('close', () => {
+    console.log('WebSocket connection closed');
+    clients.forEach((value,key) => {
+      if(value == ws){
+      console.log("removing key from map "+key);   
+      clients.delete(key); 
+      }
+    });
+  });
+
 });
 
 server.listen(ws_port, () => {
