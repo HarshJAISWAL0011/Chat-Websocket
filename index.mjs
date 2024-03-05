@@ -10,12 +10,14 @@ const ws_port = process.env.PORT || 3000 ;
 
 
 const app = express();
+app.use(express.json());
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 const clients = new Map();
 
 
-app.get('/delete', (req, res) => {
+app.post('/delete', (req, res) => {
+  console.log('delete request for '+ req.body.userId)
   deleteMessage(req.body.userId)
   res.status(204).send("deleted")
 });
