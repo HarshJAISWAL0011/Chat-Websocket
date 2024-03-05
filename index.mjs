@@ -17,6 +17,7 @@ const clients = new Map();
 
 app.get('/delete', (req, res) => {
   deleteMessage(req.body.userId)
+  res.status(204).send("deleted")
 });
 
 
