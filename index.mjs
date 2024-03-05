@@ -17,7 +17,8 @@ const clients = new Map();
 
 
 app.post('/delete', (req, res) => {
-  console.log('delete request for '+ req.body.userId)
+  console.log('delete request for '+ req.body)
+  if(req.body.userId)
   deleteMessage(req.body.userId)
   res.status(204).send("deleted")
 });
@@ -25,7 +26,6 @@ app.post('/delete', (req, res) => {
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
-deleteMessage("97")
 
 });
 
