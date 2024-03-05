@@ -2,6 +2,7 @@ import { Collection_name,WS_SEND_TO_ID,MESSAGES,FIRESTORE_REGISTRATION_TOKEN } f
 import { db } from "./FirebaseSetup.mjs";
 
 
+
 export async function saveMessageFirestore(message){
     message = JSON.parse(message)
 const docRef = db.collection(Collection_name).doc(message[WS_SEND_TO_ID]).collection(MESSAGES).doc();
@@ -33,3 +34,11 @@ export async function getRegistrationTokenFirestore(userId){
     }
 }
 
+export async function deleteMessage(id){
+    var path = db.collection(Collection_name).doc(id).collection(MESSAGES)
+    path.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          doc.ref.delete();
+        });
+      });
+}

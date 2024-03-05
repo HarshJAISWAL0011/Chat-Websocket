@@ -3,7 +3,7 @@ import http from 'http';
 import { WebSocketServer } from 'ws';
 import { New_Connection, New_Message, WS_MESSAGE, WS_SENDER_ID, WS_SEND_TO_ID, WS_TYPE} from './Constant.mjs';
 './Firebase/FirebaseSetup.mjs';
-import { saveMessageFirestore } from './Firebase/util.mjs'; 
+import { saveMessageFirestore,deleteMessage } from './Firebase/util.mjs'; 
 import {sendCloudMessage} from './Firebase/Messaging.mjs';
 
 const ws_port = process.env.PORT || 3000 ;
@@ -15,8 +15,15 @@ const wss = new WebSocketServer({ server });
 const clients = new Map();
 
 
+app.get('/delete', (req, res) => {
+  deleteMessage(req.body.userId)
+});
+
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
+deleteMessage("97")
+
 });
 
 wss.on('connection', (ws) => {
