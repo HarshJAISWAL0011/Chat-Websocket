@@ -4,13 +4,15 @@ import { db } from "./FirebaseSetup.mjs";
 
 
 export async function saveMessageFirestore(message){
+    try {
     message = JSON.parse(message)
 const docRef = db.collection(Collection_name).doc(message[WS_SEND_TO_ID]).collection(MESSAGES).doc();
 
  docRef.set(message)
  console.log("Message saved to Firestore")
+    }catch(error){console.log(`error in saveMessageFirestore: ${error}`)
 }
-
+}
 
 export async function getRegistrationTokenFirestore(userId){
     try {
@@ -35,10 +37,12 @@ export async function getRegistrationTokenFirestore(userId){
 }
 
 export async function deleteMessage(id){
+    try{
     var path = db.collection(Collection_name).doc(id).collection(MESSAGES)
     path.get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           doc.ref.delete();
         });
       });
+    }catch(e){console.log("error deleting message"+e);}
 }

@@ -12,6 +12,7 @@ var registrationToken = "ehYLw0JgRkuY1duiMvBTEy:APA91bEmvUO6rmidllcRBQtnQIqF2cmO
 
 
 export async function sendCloudMessage(sendto, senderId, message) {
+  try{
     registrationToken = await getRegistrationTokenFirestore(sendto)
     if(!registrationToken){
      return
@@ -26,4 +27,6 @@ export async function sendCloudMessage(sendto, senderId, message) {
     .catch((error) => {
       console.log('Error sending message:', error);
     });
+  }
+  catch (error) {console.log('Error sending cloud message:', error);}
 }

@@ -17,7 +17,7 @@ const clients = new Map();
 
 
 app.post('/delete', (req, res) => {
-  console.log('delete request for '+ req.body)
+  console.log('delete request for '+ JSON.stringify(req.body))
   if(req.body.userId)
   deleteMessage(req.body.userId)
   res.status(204).send("deleted")
