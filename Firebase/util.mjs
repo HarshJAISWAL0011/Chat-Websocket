@@ -48,11 +48,13 @@ export async function deleteMessage(id){
 }
 
 export async function getGroupMember(groupId){
-    const snapshot =await db.collection(Collection_Group).doc(groupId).get();
+    console.log(`$groupId: ${groupId}`);
+    const snapshot =await db.collection('groups').doc('grp2').collection('members').get();
     let memberId=[]
     snapshot.forEach(docRef => {
-        memberId.push(docRef.data)
+        memberId.push(docRef.id)
     })
-    console.log(`Member ${memberId}`)
+
+    console.log(`${memberId}`)
     return memberId;
 }

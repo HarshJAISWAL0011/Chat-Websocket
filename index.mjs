@@ -53,16 +53,7 @@ wss.on('connection', (ws) => {
         sendCloudMessage(sendto,msgJson[WS_SENDER_ID],msgJson[WS_MESSAGE])
       }
     }else if(msgJson[WS_TYPE] == WS_NEW_GROUP_MESSAGE){
-      const groupId = msgJson[WS_GROUP_ID]
-      let groupMember = getGroupMember(groupId)
-      groupMember.forEach( sendto=>{
-        if(clients.has(sendto)){
-          sendMessageToClient(sendto, msgJson)
-        }
-        else{
-          // saveMessageFirestore(message)
-        }
-      })
+      sendMessageToGroup(msgJson)
     }
 
     } catch (error){
@@ -93,4 +84,17 @@ function sendMessageToClient(clientId, messageObj) {
   if (client) {
     client.send(JSON.stringify(messageObj));
   } 
+}
+
+async function sendMessageToGroup(msgJson){
+  const groupId = msgJson[WS_GROUP_ID]
+  let groupMember =await getGroupMember(groupId)
+  groupMember.forEach( sendto=>{
+    if(clients.has(sendto)){
+      sendMessageToClient(sendto, msgJson)
+    }
+    else{
+      // saveMessageFirestore(message)
+    }
+  })
 }
