@@ -1,9 +1,10 @@
 import express from 'express';
 import http from 'http';
 import { WebSocketServer } from 'ws';
-import { New_Connection, New_Message, WS_MESSAGE, WS_SENDER_ID, WS_SEND_TO_ID, WS_TYPE} from './Constant.mjs';
+import { New_Connection, New_Message, WS_MESSAGE, WS_SENDER_ID, WS_SEND_TO_ID,
+   WS_TYPE,WS_NEW_GROUP_MESSAGE, WS_GROUP_ID} from './Constant.mjs';
 './Firebase/FirebaseSetup.mjs';
-import { saveMessageFirestore,deleteMessage } from './Firebase/util.mjs'; 
+import { saveMessageFirestore,deleteMessage, getGroupMember } from './Firebase/util.mjs'; 
 import {sendCloudMessage} from './Firebase/Messaging.mjs';
 
 const ws_port = process.env.PORT || 3000 ;
@@ -51,6 +52,17 @@ wss.on('connection', (ws) => {
         saveMessageFirestore(message)
         sendCloudMessage(sendto,msgJson[WS_SENDER_ID],msgJson[WS_MESSAGE])
       }
+    }else if(msgJson[WS_TYPE] == WS_NEW_GROUP_MESSAGE){
+      const groupId = msgJson[WS_GROUP_ID]
+      let groupMember = getGroupMember(groupId)
+      groupMember.forEach( sendto=>{
+        if(clients.has(sendto)){
+          sendMessageToClient(sendto, msgJson)
+        }
+        else{
+          // saveMessageFirestore(message)
+        }
+      })
     }
 
     } catch (error){

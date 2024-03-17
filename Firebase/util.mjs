@@ -1,4 +1,4 @@
-import { Collection_name,WS_SEND_TO_ID,MESSAGES,FIRESTORE_REGISTRATION_TOKEN } from "../Constant.mjs";
+import { Collection_name,WS_SEND_TO_ID,MESSAGES,FIRESTORE_REGISTRATION_TOKEN, Collection_Group } from "../Constant.mjs";
 import { db } from "./FirebaseSetup.mjs";
 
 
@@ -16,7 +16,7 @@ const docRef = db.collection(Collection_name).doc(message[WS_SEND_TO_ID]).collec
 
 export async function getRegistrationTokenFirestore(userId){
     try {
-        const docRef = db.collection('users').doc("84");
+        const docRef = db.collection('users').doc(userId);
         const docSnapshot = await docRef.get( { fields: ['registrationToken'] });
         if (docSnapshot.exists) {
             const userData = docSnapshot.data();
@@ -45,4 +45,14 @@ export async function deleteMessage(id){
         });
       });
     }catch(e){console.log("error deleting message"+e);}
+}
+
+export async function getGroupMember(groupId){
+    const snapshot =await db.collection(Collection_Group).doc(groupId).get();
+    let memberId=[]
+    snapshot.forEach(docRef => {
+        memberId.push(docRef.data)
+    })
+    console.log(`Member ${memberId}`)
+    return memberId;
 }
