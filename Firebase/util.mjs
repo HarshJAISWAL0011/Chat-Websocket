@@ -72,6 +72,14 @@ export async function addGroupMember(groupMembers, groupName, createdBy){
             groupMembers: admin.firestore.FieldValue.arrayUnion(...groupMembers)
     })
 
+    // TODO: send cloud message about joining group
+        groupMembers.forEach(member =>{
+            db.collection(Collection_name).doc(member).update(
+                {groups:admin.firestore.FieldValue.arrayUnion(docref.id)}
+            )
+        }
+          );
+
         console.log(`Data added successfully! ${(docref.id)}`);
         return docref.id
         
