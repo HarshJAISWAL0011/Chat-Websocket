@@ -4,7 +4,7 @@ import { WebSocketServer } from 'ws';
 import { New_Connection, New_Message, WS_MESSAGE, WS_SENDER_ID, WS_SEND_TO_ID,
    WS_TYPE,WS_NEW_GROUP_MESSAGE, WS_GROUP_ID} from './Constant.mjs';
 './Firebase/FirebaseSetup.mjs';
-import { saveMessageFirestore,deleteMessage, getGroupMember } from './Firebase/util.mjs'; 
+import { saveMessageFirestore,deleteMessage, getGroupMember,addGroupMember } from './Firebase/util.mjs'; 
 import {sendCloudMessage} from './Firebase/Messaging.mjs';
 
 const ws_port = process.env.PORT || 3000 ;
@@ -22,6 +22,18 @@ app.post('/delete', (req, res) => {
   if(req.body.userId)
   deleteMessage(req.body.userId)
   res.status(204).send("deleted")
+});
+
+ 
+
+app.post('/create_group', async(req, res) => {
+  console.log('create_group request '+ JSON.stringify(req.body))
+ 
+    var body = req.body
+    if(body)
+    var id = await addGroupMember(body.groupMembers,body.groupName,body.createdBy)
+  
+  res.status(200).send({id})
 });
 
 
