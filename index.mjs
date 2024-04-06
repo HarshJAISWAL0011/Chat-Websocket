@@ -24,9 +24,13 @@ app.post('/delete', (req, res) => {
   res.status(204).send("deleted")
 });
 
-// var groupMember = ['010','099','098']
+app.post('/channel_message', (req, res) => {
+  console.log('channel message '+ JSON.stringify(req.body))
 
-// addGroupMember(groupMember,"body.groupName","body.createdBy")
+  
+
+});
+
 
 app.post('/create_group', async(req, res) => {
   console.log('create_group request '+ JSON.stringify(req.body))
