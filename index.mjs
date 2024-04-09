@@ -8,9 +8,9 @@ import { saveMessageFirestore,deleteMessage, getGroupMember,addGroupMember, addC
 import {sendCloudMessage} from './Firebase/Messaging.mjs';
 import {checkContent} from './ContentDetection/setup.mjs'
 
-setTimeout(() => {
-  checkContent();
-}, 2000);
+// setTimeout(() => {
+//   checkContent();
+// }, 2000);
 
 
 const ws_port = process.env.PORT || 3000 ;
