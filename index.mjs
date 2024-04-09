@@ -111,7 +111,6 @@ server.listen(ws_port, () => {
 
 function sendMessageToClient(clientId, messageObj) {
   const client = clients.get(clientId);
-  console.log('Sending message to client with id ' + clientId+ ': ' + JSON.stringify(messageObj))
   if (client) {
     client.send(JSON.stringify(messageObj));
   } 
