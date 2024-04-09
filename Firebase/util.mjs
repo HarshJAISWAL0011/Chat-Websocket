@@ -1,4 +1,5 @@
-import { Collection_name,WS_SEND_TO_ID,MESSAGES,FIRESTORE_REGISTRATION_TOKEN, Collection_Group, Document_Group_Members  } from "../Constant.mjs";
+import { Collection_name,WS_SEND_TO_ID,MESSAGES,FIRESTORE_REGISTRATION_TOKEN,
+     Collection_Group, Document_Group_Members, Collection_Channel  } from "../Constant.mjs";
 import { db } from "./FirebaseSetup.mjs";
 import admin from 'firebase-admin';
 
@@ -86,5 +87,11 @@ export async function addGroupMember(groupMembers, groupName, createdBy){
       } catch (error) {
         console.error('Error adding data:', error);
       }
+}
+
+
+export function addChannelMessage(message) {
+    const ref = db.collection(Collection_Channel).doc(message.channelId).collection("messages");
+    ref.add(message);
 }
 

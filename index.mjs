@@ -4,8 +4,14 @@ import { WebSocketServer } from 'ws';
 import { New_Connection, New_Message, WS_MESSAGE, WS_SENDER_ID, WS_SEND_TO_ID,
    WS_TYPE,WS_NEW_GROUP_MESSAGE, WS_GROUP_ID} from './Constant.mjs';
 './Firebase/FirebaseSetup.mjs';
-import { saveMessageFirestore,deleteMessage, getGroupMember,addGroupMember } from './Firebase/util.mjs'; 
+import { saveMessageFirestore,deleteMessage, getGroupMember,addGroupMember, addChannelMessage } from './Firebase/util.mjs'; 
 import {sendCloudMessage} from './Firebase/Messaging.mjs';
+import {checkContent} from './ContentDetection/setup.mjs'
+
+setTimeout(() => {
+  checkContent();
+}, 2000);
+
 
 const ws_port = process.env.PORT || 3000 ;
 
@@ -24,10 +30,12 @@ app.post('/delete', (req, res) => {
   res.status(204).send("deleted")
 });
 
+// let msg ={"channelId":"oI9ajXMQuVFcIgxmu7zi","message":"tr","messageId":"1712377179029oI9ajXMQuVFcIgxmu7zi","messageType":"text","timestamp":1712377179029}
+// addChannelMessage(msg)
+
 app.post('/channel_message', (req, res) => {
   console.log('channel message '+ JSON.stringify(req.body))
 
-  
 
 });
 
@@ -58,7 +66,12 @@ wss.on('connection', (ws) => {
     ws.send(`Server Recived you msg: ${message}`);
     var msgJson = JSON.parse(message);
 
-    if(msgJson[WS_TYPE] == New_Connection )
+    if(msgJson[WS_TYPE] == "StartAudioCall"  || msgJson[WS_TYPE] == "StartVideoCall" || msgJson[WS_TYPE] =="Offer" || msgJson[WS_TYPE] =="Answer"
+    || msgJson[WS_TYPE] =="IceCandidates" || msgJson[WS_TYPE] =="EndCall"){
+      sendMessageToClient(msgJson['target'], msgJson)
+    }
+
+    else if(msgJson[WS_TYPE] == New_Connection )
       clients.set(msgJson[WS_SENDER_ID], ws);
 
     else if(msgJson[WS_TYPE] ==New_Message){
