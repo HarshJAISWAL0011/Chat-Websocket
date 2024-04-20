@@ -33,11 +33,19 @@ app.post('/delete', (req, res) => {
 // let msg ={"channelId":"jrAm9SYJzUMYHGIswTgp","message":"hello","messageId":"1713608059282jrAm9SYJzUMYHGIswTgp","messageType":"text","timestamp":1713608059283}
 // addChannelMessage(msg)
 
-app.post('/channel_message', (req, res) => {
+app.post('/channel_message', async (req, res) => {
   console.log('channel message '+ JSON.stringify(req.body))
   let msg = req.body
   // check if message is not explicit
-  addChannelMessage(msg)
+  if(msg.messageType == 'image'){
+   let result = await checkContent(msg.message)
+   if(result == 1)
+    addChannelMessage(msg)
+   else{
+    // Inform user about explicit content
+  }
+  }else
+   addChannelMessage(msg)
   res.status(200).send({message: "ok"})
 });
 
