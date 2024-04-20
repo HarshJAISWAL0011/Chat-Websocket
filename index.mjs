@@ -30,13 +30,15 @@ app.post('/delete', (req, res) => {
   res.status(204).send("deleted")
 });
 
-// let msg ={"channelId":"oI9ajXMQuVFcIgxmu7zi","message":"tr","messageId":"1712377179029oI9ajXMQuVFcIgxmu7zi","messageType":"text","timestamp":1712377179029}
+// let msg ={"channelId":"jrAm9SYJzUMYHGIswTgp","message":"hello","messageId":"1713608059282jrAm9SYJzUMYHGIswTgp","messageType":"text","timestamp":1713608059283}
 // addChannelMessage(msg)
 
 app.post('/channel_message', (req, res) => {
   console.log('channel message '+ JSON.stringify(req.body))
-
-
+  let msg = req.body
+  // check if message is not explicit
+  addChannelMessage(msg)
+  res.status(200).send({message: "ok"})
 });
 
 
