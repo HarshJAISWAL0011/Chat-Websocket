@@ -39,10 +39,14 @@ app.post('/channel_message', async (req, res) => {
   // check if message is not explicit
   if(msg.messageType == 'image'){
    let result = await checkContent(msg.message)
-   if(result == 1)
+   console.log("result = "+result)
+   if(result == 1){
     addChannelMessage(msg)
+    console.log('Saving channel message...')
+  }
    else{
     // Inform user about explicit content
+    console.log('Explicit content was detected')
   }
   }else
    addChannelMessage(msg)

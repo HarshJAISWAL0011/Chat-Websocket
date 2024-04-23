@@ -75,9 +75,15 @@ export async function addGroupMember(groupMembers, groupName, createdBy){
 
     // TODO: send cloud message about joining group
         groupMembers.forEach(member =>{
+            if(member == createdBy){
+                db.collection(Collection_name).doc(member).update(
+                    {groups_created:admin.firestore.FieldValue.arrayUnion(docref.id)}
+                )
+        }else{
             db.collection(Collection_name).doc(member).update(
-                {groups:admin.firestore.FieldValue.arrayUnion(docref.id)}
+                {groups_joined:admin.firestore.FieldValue.arrayUnion(docref.id)}
             )
+        }
         }
           );
 

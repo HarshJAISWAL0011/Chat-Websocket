@@ -51,7 +51,7 @@ const client = new ImageAnnotatorClient(CONFIG);
   } catch (error) {
     console.error('Error performing safe search detection:', error);
   }
-  return 0;
+   return 1;
 }
 
 //  checkContent();
