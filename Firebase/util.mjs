@@ -98,6 +98,6 @@ export async function addGroupMember(groupMembers, groupName, createdBy){
 
 export function addChannelMessage(message) {
     const ref = db.collection(Collection_Channel).doc(message.channelId).collection("messages");
-    ref.add(message);
+    ref.doc(message.messageId).set(message);
 }
 
