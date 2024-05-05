@@ -95,7 +95,7 @@ wss.on('connection', (ws) => {
       }else{
         console.log("Save message to firebase");
         saveMessageFirestore(message)
-        sendCloudMessage(sendto,msgJson[WS_SENDER_ID],msgJson[WS_MESSAGE])
+        sendCloudMessage(sendto,msgJson[WS_SENDER_ID],msgJson[WS_MESSAGE], "New message received")
       }
     }else if(msgJson[WS_TYPE] == WS_NEW_GROUP_MESSAGE){
       sendMessageToGroup(msgJson)

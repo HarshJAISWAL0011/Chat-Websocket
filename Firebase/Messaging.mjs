@@ -1,7 +1,6 @@
 import { getMessaging } from 'firebase-admin/messaging';
 import { getRegistrationTokenFirestore } from "./util.mjs";
-import { getFCMMessageJson } from "../Constant.mjs";
-
+ 
 
 // Initialize messaging
 const messaging = getMessaging();
@@ -11,13 +10,13 @@ var registrationToken = "ehYLw0JgRkuY1duiMvBTEy:APA91bEmvUO6rmidllcRBQtnQIqF2cmO
 
 
 
-export async function sendCloudMessage(sendto, senderId, message) {
+export async function sendCloudMessage(sendto, senderId, message, title) {
   try{
     registrationToken = await getRegistrationTokenFirestore(sendto)
     if(!registrationToken){
      return
 }
-    const FCMmessage = getFCMMessageJson(senderId,message,registrationToken)
+    const FCMmessage = getFCMMessageJson(senderId,message,title,registrationToken)
 
   messaging.send(FCMmessage)
     .then((response) => {
@@ -29,4 +28,19 @@ export async function sendCloudMessage(sendto, senderId, message) {
     });
   }
   catch (error) {console.log('Error sending cloud message:', error);}
+}
+
+
+ function getFCMMessageJson(senderId, message,title, registrationToken){
+  const FCMmessage = {
+  data: {
+    // max size of 4kb
+    // messageId: message.messageId,
+    title: title,
+    sender_id: senderId,
+    message: message,
+  },
+  token: registrationToken
+};
+return FCMmessage
 }
