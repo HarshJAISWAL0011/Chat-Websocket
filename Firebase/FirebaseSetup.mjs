@@ -1,11 +1,15 @@
-import { initializeApp, applicationDefault, cert } from 'firebase-admin/app';
-import { readFileSync } from 'fs';
-import { getFirestore, Timestamp, FieldValue, Filter } from 'firebase-admin/firestore';
+import { initializeApp, cert } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
+import dotenv from 'dotenv';
+dotenv.config();
+const cred = JSON.parse(process.env.FIRESTORE_CREDENTIALS)
 
-import { serviceAccountKey } from '../Constant.mjs';
 
 initializeApp({
-  credential: cert(serviceAccountKey)
+  credential: cert(cred)
 });
 
+
 export const db = getFirestore();
+// db.collection('calls').doc('IN1').set({'type': "Endi"})
+// console.log("credd = "+cred.type )
