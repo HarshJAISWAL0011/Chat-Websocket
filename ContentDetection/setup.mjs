@@ -1,5 +1,7 @@
 import{ImageAnnotatorClient} from "@google-cloud/vision" 
-import CREDENTIALS from '../ApiKey.json' assert { type: 'json' };
+import dotenv from 'dotenv';
+dotenv.config();
+const CREDENTIALS = JSON.parse(process.env.VISION_CREDENTIAL)
 
 const CONFIG = {
   credentials: {
