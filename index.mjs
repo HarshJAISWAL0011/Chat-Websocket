@@ -7,6 +7,7 @@ import { New_Connection, New_Message, WS_MESSAGE, WS_SENDER_ID, WS_SEND_TO_ID,
 import { saveMessageFirestore,deleteMessage, getGroupMember,addGroupMember, addChannelMessage } from './Firebase/util.mjs'; 
 import {sendCloudMessage} from './Firebase/Messaging.mjs';
 import {checkContent} from './ContentDetection/setup.mjs'
+import cors from 'cors'
 
 // setTimeout(() => {
 //   checkContent();
@@ -21,6 +22,7 @@ app.use(express.json());
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 const clients = new Map();
+app.use(cors())
 
 
 app.post('/delete', (req, res) => {
