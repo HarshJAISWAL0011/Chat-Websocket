@@ -5,60 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebSocket Chat Client</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #e9ecef;
-            margin: 0;
-            padding: 20px;
-        }
+.container {
+    width: 90%; /* Set the width to 90% of the viewport */
+    max-width: 1200px; /* Optional: Set a max width to prevent it from being too wide */
+    max-height: 90vh; /* Maximum height of the container relative to the viewport height */
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
+    height: auto; /* Allow height to adjust based on content */
+}
 
-        .container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            background: white;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-            height: 400px; /* Fixed height for scrolling */
-        }
+.message {
+    display: flex;
+    align-items: end;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #f1f1f1;
+    position: relative;
+    max-width: 80%;
+    word-wrap: break-word;
+    margin-left: auto; /* Align all messages to the right */
+}
 
-        .message {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            padding: 10px;
-            background-color: #f1f1f1;
-            position: relative;
-            max-width: 80%;
-            word-wrap: break-word;
-        }
+.message.user {
+    background-color: #007bff;
+    color: white;
+    display: flex;
+    justify-content: end;
+    /* Remove margin-left to position user messages correctly */
+}
 
-        .message.user {
-            background-color: #007bff;
-            color: white;
-            margin-left: auto;
-        }
+.copy-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+}
 
-        .copy-button {
-            margin-left: 10px;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            background: #007bff;
-            color: white;
-            cursor: pointer;
-        }
+.copy-button:hover {
+    background: #0056b3;
+}
 
-        .copy-button:hover {
-            background: #0056b3;
-        }
+h1 {
+    text-align: center;
+    color: #007bff;
+}
 
-        h1 {
-            text-align: center;
-            color: #007bff;
-        }
     </style>
 </head>
 <body>
