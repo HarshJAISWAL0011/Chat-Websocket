@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat Client</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            height: 400px; /* Fixed height for scrolling */
+        }
+
+        .message {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #f1f1f1;
+            position: relative;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .message.user {
+            background-color: #007bff;
+            color: white;
+            margin-left: auto;
+        }
+
+        .copy-button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+            background: #0056b3;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="messageContainer">
+        <h1>WebSocket Chat Client</h1>
+    </div>
+
+    <script>
+        
+        const url = 'wss://chat-websocker.onrender.com/'
+        const messageContainer = document.getElementById("messageContainer");
+        const socket = new WebSocket(url);
+
+        socket.onopen = () => {
+            console.log("WebSocket connection established.");
+            socket.send(JSON.stringify({sender_id:"cheater1", type: "New_Connection_EXAM"}));
+        };
+
+        socket.onmessage = (event) => {
+            var obj ={}
+            try{
+                obj = JSON.parse(event.data);
+                console.log(event.data)
+                addMessage(obj);
+            }catch(err){
+                console.log(event.data);
+                console.log( typeof event.data);
+            }
+        };
+
+        socket.onclose = () => {
+            console.log("WebSocket connection closed.");
+        };
+
+        function addMessage(obj) {
+            // Create message bubble
+            const messageBubble = document.createElement("div");
+            messageBubble.className = "message user"; // Add 'user' class for styling
+            messageBubble.innerText = obj.message;
+
+            // Create copy button
+            const copyButton = document.createElement("button");
+            copyButton.innerText = "Copy";
+            copyButton.className = "copy-button";
+
+            // Add click event for copy button
+            copyButton.addEventListener("click", () => {
+                navigator.clipboard.writeText(obj.message)
+                    .then(() => {
+                        console.log("Message copied to clipboard.");
+                    })
+                    .catch(err => {
+                        console.error("Error copying message: ", err);
+                    });
+            });
+
+            // Append button to message bubble
+            messageBubble.appendChild(copyButton);
+            // Append message bubble to container
+            messageContainer.appendChild(messageBubble);
+
+            // Scroll to the bottom of the message container
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>

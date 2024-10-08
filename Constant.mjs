@@ -1,7 +1,9 @@
 export var New_Connection = "New_Connection";
+export var New_Connection_EXAM = "New_Connection_EXAM";
 export var New_Message = "New_Message";
 export var Collection_name = "users";
 export var WS_SENDER_ID = "sender_id";
+
 export var WS_SEND_TO_ID = "sendto_id";
 export var MESSAGES = "messages";
 export var WS_MESSAGE = "message";
